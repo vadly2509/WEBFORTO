@@ -651,25 +651,45 @@
             icon.classList.add('fa-sun');
         }
 
-        // Form Submission to WhatsApp
+        // Form Submission to Telegram Bot
+        // Form Submission to Telegram Bot via Bot API
         document.querySelector('#contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const name = document.getElementById('name').value;
             const message = document.getElementById('message').value;
 
-            // Format WhatsApp message
-            const whatsappMessage = `Hello Vadly,\n\n Nama Saya ${name},\n ${message}`;
+            // Format Telegram message
+            const telegramMessage = `Hello Vadly,\n\n Nama Saya ${name},\n ${message}`;
 
-            // WhatsApp API URL
-            const whatsappLink = `https://wa.me/6281212226905?text=${encodeURIComponent(whatsappMessage)}`;
+            // Telegram Bot API token (dari BotFather)
+            const botToken = '7488243384:AAE333Hs4YhmvCkEATJUK7qTZktYuhlraSQ';  // Ganti dengan API token bot Anda
+            const chatId = '-4755254624';  // Ganti dengan chat ID atau ID grup yang ingin Anda kirimkan pesan
 
-            // Open WhatsApp in new tab
-            window.open(whatsappLink, '_blank');
+            // URL API Telegram untuk mengirim pesan
+            const telegramAPIUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`;
+
+            // Kirim pesan ke bot melalui Fetch API
+            fetch(telegramAPIUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Pesan berhasil dikirim ke Telegram!');
+                    } else {
+                        alert('Terjadi kesalahan saat mengirim pesan.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengirim pesan.');
+                });
 
             // Reset form
             this.reset();
         });
+
+
+
 
         // Add hover effect to skill cards
         document.querySelectorAll('.skill-card').forEach(card => {
